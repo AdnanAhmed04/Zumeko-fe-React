@@ -3,6 +3,11 @@ import React from 'react'
 // importing components
 import GreetingCard from '../components/GreetingCard';
 import DashboardCards from '../components/DashboardCards';
+import LateArrivalsCard from '../components/LateArrivalsCard';
+import TodaysActivityCard from '../components/TodaysActivityCard';
+import TeamSizeCard from '../components/TeamSizeCard';
+import AttendanceRateCard from '../components/AttendanceRateCard';
+
 import AttendanceSummary from '../components/AttendanceSummary';
 import LeaveSummary from '../components/Leave Summary';
 import CompanyAnnouncements from '../components/Announcements';
@@ -26,10 +31,16 @@ const Dashboard = () => {
 
 
   return (
-    <div>
+    <div className='flex flex-col space-y-6'>
       Dashboard
       <GreetingCard />
-      <DashboardCards />
+      {/* <DashboardCards /> */}
+      <div className="flex justify-between gap-4">
+        <LateArrivalsCard />
+        <TeamSizeCard />
+        <TodaysActivityCard />
+        <AttendanceRateCard />
+      </div>
       <AttendanceSummary />
       <LeaveSummary />
       <CompanyAnnouncements />
