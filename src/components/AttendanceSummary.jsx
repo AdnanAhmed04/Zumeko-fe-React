@@ -58,7 +58,7 @@ export default function AttendanceSummary() {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="p-2 bg-gray-50 border border-gray-200 rounded shadow-lg text-sm">
+        <div className="p-2 bg-gray-50 border border-gray-200 rounded  text-sm">
           <p className="font-medium">{payload[0].payload[xAxisKey[period]]}</p>
           <p>
             <span className="font-bold text-green-600">On-Time:</span>{" "}
@@ -79,7 +79,7 @@ export default function AttendanceSummary() {
   };
 
   return (
-    <div className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100">
+    <div className="p-6 bg-white rounded-2xl  border-2 border-gray-100">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold text-gray-800">
           Attendance Summary
@@ -106,51 +106,52 @@ export default function AttendanceSummary() {
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart
-          data={dataSets[period]}
-          barGap={10}
-          barSize={30}
-        >
-          <XAxis dataKey={xAxisKey[period]} stroke="#6b7280" fontSize={12} />
-          <YAxis hide />
-          <Tooltip
-            content={<CustomTooltip />}
-            cursor={{ fill: "transparent" }} // removes vertical gray cursor
-          />
-          <Legend
-            formatter={(value) => (
-              <span className="text-gray-600 font-medium">{value}</span>
-            )}
-            iconType="circle"
-            iconSize={10}
-          />
-          <Bar
-            dataKey="ontime"
-            stackId="a"
-            fill="#22c55e"
-            name="On-Time"
-            radius={[4, 4, 0, 0]}
-            activeBar={false}
-          />
-          <Bar
-            dataKey="late"
-            stackId="a"
-            fill="#eab308"
-            name="Late"
-            radius={[4, 4, 0, 0]}
-            activeBar={false}
-          />
-          <Bar
-            dataKey="absent"
-            stackId="a"
-            fill="#ef4444"
-            name="Absent"
-            radius={[4, 4, 0, 0]}
-            activeBar={false}
-          />
-        </BarChart>
-      </ResponsiveContainer>
+     <ResponsiveContainer width="100%" height={300}>
+  <BarChart
+    data={dataSets[period]}
+    barGap={0}
+    barSize={70} // ⬅️ increased from 30 to 50
+  >
+    <XAxis dataKey={xAxisKey[period]} stroke="#6b7280" fontSize={12} />
+    <YAxis hide />
+    <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
+    <Legend
+      formatter={(value) => (
+        <span className="text-gray-600 font-medium">{value}</span>
+      )}
+      iconType="circle"
+      iconSize={10}
+    />
+
+    {/* On-Time */}
+    <Bar
+      dataKey="ontime"
+      stackId="a"
+      fill="#22c55e"
+      name="On-Time"
+      radius={[4, 4, 0, 0]}
+    />
+
+    {/* Late */}
+    <Bar
+      dataKey="late"
+      stackId="a"
+      fill="#eab308"
+      name="Late"
+      radius={[4, 4, 0, 0]}
+    />
+
+    {/* Absent */}
+    <Bar
+      dataKey="absent"
+      stackId="a"
+      fill="#ef4444"
+      name="Absent"
+      radius={[4, 4, 0, 0]}
+    />
+  </BarChart>
+</ResponsiveContainer>
+
     </div>
   );
 }

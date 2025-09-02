@@ -45,10 +45,16 @@ const Dashboard = () => {
       <LeaveSummary />
       <CompanyAnnouncements />
 
-      <div className='flex justify-between'>
-        <PayrollStatus />
-        <TeamLeaveCalendar />
-        <Weather />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        <div className="w-full">
+          <PayrollStatus />
+        </div>
+        <div className="w-full">
+          <TeamLeaveCalendar />
+        </div>
+        <div className="w-full">
+          <Weather />
+        </div>
       </div>
 
       <div className="p-6 flex space-x-6">
