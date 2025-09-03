@@ -1,7 +1,7 @@
 import React from "react";
 
 const GenderDiversity = () => {
-  const total = 105;
+  const total = 100;
   const maleCount = 65;
   const femaleCount = 35;
 
