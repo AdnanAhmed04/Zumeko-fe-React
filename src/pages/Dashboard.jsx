@@ -35,7 +35,7 @@ const Dashboard = () => {
       Dashboard
       <GreetingCard />
       {/* <DashboardCards /> */}
-      <div className="flex justify-between gap-4">
+      <div className="flex justify-between gap-4 lg:flex-nowrap flex-wrap">
         <LateArrivalsCard />
         <TeamSizeCard />
         <TodaysActivityCard />
@@ -57,7 +57,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-wrap">
         <GenderDiversity />
         <EmploymentStatus />
         <OnboardingProgress />
