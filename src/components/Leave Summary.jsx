@@ -43,6 +43,7 @@ const dataSets = {
 
 const LeaveSummary = () => {
   const [period, setPeriod] = useState("weekly");
+  const [fontSize, setFontSize] = useState(14); // default for small screens
 
   const xAxisKey = {
     weekly: "day",
@@ -96,12 +97,12 @@ const LeaveSummary = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-xl font-semibold flex items-center gap-2">
+          <h2 className="text-3xl md:text-xl font-semibold text-gray-800">
             📅 Leave Summary
           </h2>
           <p className="text-gray-500 text-sm">Leave types and counts taken</p>
         </div>
-        <div className="space-x-2">
+        <div className="space-x-2 text-xl  md:text-lg ">
           <button
             className={getButtonStyles("weekly")}
             onClick={() => setPeriod("weekly")}
@@ -127,7 +128,7 @@ const LeaveSummary = () => {
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={dataSets[period]} barGap={8} barSize={70}>
-            <XAxis dataKey={xAxisKey[period]} stroke="#6b7280" fontSize={12} />
+            <XAxis dataKey={xAxisKey[period]} stroke="#6b7280" tick={{ fontSize, fontWeight: 600, fill: "#374151" }} />
             <YAxis hide />
             <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
             <Legend
@@ -135,7 +136,7 @@ const LeaveSummary = () => {
                 <span className="text-gray-600 font-medium">{value}</span>
               )}
               iconType="circle"
-              iconSize={10}
+              iconSize={12}
             />
             <Bar dataKey="Sick" stackId="a" fill="#ef4444" name="Sick Leave" radius={[4, 4, 0, 0]} />
             <Bar dataKey="Vacation" stackId="a" fill="#3b82f6" name="Vacation" radius={[4, 4, 0, 0]} />
@@ -148,20 +149,20 @@ const LeaveSummary = () => {
       {/* Totals */}
       <div className="flex justify-around mt-6 text-center">
         <div>
-          <p className="text-red-500 text-lg font-semibold">{totals[period].Sick}</p>
-          <p className="text-sm text-gray-600">Sick Leave</p>
+          <p className="text-red-500 text-xl  md:text-lg  font-semibold">{totals[period].Sick}</p>
+          <p className="text-lg md:text-sm text-gray-600">Sick Leave</p>
         </div>
         <div>
-          <p className="text-blue-500 text-lg font-semibold">{totals[period].Vacation}</p>
-          <p className="text-sm text-gray-600">Vacation</p>
+          <p className="text-blue-500 text-xl  md:text-lg  font-semibold">{totals[period].Vacation}</p>
+          <p className="text-lg md:text-sm text-gray-600">Vacation</p>
         </div>
         <div>
-          <p className="text-purple-500 text-lg font-semibold">{totals[period].Personal}</p>
-          <p className="text-sm text-gray-600">Personal</p>
+          <p className="text-purple-500 text-xl  md:text-lg font-semibold">{totals[period].Personal}</p>
+          <p className="text-lg md:text-sm text-gray-600">Personal</p>
         </div>
         <div>
-          <p className="text-yellow-500 text-lg font-semibold">{totals[period].Emergency}</p>
-          <p className="text-sm text-gray-600">Emergency</p>
+          <p className="text-yellow-500 text-xl  md:text-lg  font-semibold">{totals[period].Emergency}</p>
+          <p className="text-lg md:text-sm text-gray-600">Emergency</p>
         </div>
       </div>
     </div>

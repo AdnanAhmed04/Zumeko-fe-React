@@ -11,6 +11,7 @@ import {
 
 export default function AttendanceSummary() {
   const [period, setPeriod] = useState("week");
+  const [fontSize, setFontSize] = useState(14); // default for small screens
 
   const dataSets = {
     week: [
@@ -53,12 +54,12 @@ export default function AttendanceSummary() {
   const getButtonStyles = (buttonPeriod) =>
     period === buttonPeriod
       ? "px-4 py-1.5 text-sm rounded-full bg-green-100 text-green-700 font-medium"
-      : "px-4 py-1.5 text-sm rounded-full border border-gray-300 text-gray-600";
+      : "px-4 py-1.5 text-sm rounded-full border border-gray-300 text-gray-600 ";
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="p-2 bg-gray-50 border border-gray-200 rounded  text-sm">
+        <div className="p-2 bg-gray-50 border border-gray-200 rounded  text-md">
           <p className="font-medium">{payload[0].payload[xAxisKey[period]]}</p>
           <p>
             <span className="font-bold text-green-600">On-Time:</span>{" "}
@@ -81,10 +82,10 @@ export default function AttendanceSummary() {
   return (
     <div className="p-6 bg-white rounded-2xl  border-2 border-gray-100">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-800">
+        <h2 className="text-3xl md:text-xl font-semibold text-gray-800">
           Attendance Summary
         </h2>
-        <div className="flex gap-3 ">
+        <div className="flex gap-3 text-xl  md:text-lg ">
           <button
             className={getButtonStyles("week")}
             onClick={() => setPeriod("week")}
@@ -112,15 +113,15 @@ export default function AttendanceSummary() {
     barGap={0}
     barSize={70} // ⬅️ increased from 30 to 50
   >
-    <XAxis dataKey={xAxisKey[period]} stroke="#6b7280" fontSize={12} />
-    <YAxis hide />
+<XAxis dataKey={xAxisKey[period]} stroke="#6b7280" tick={{ fontSize, fontWeight: 600, fill: "#374151" }} />
+   <YAxis hide />
     <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
     <Legend
       formatter={(value) => (
         <span className="text-gray-600 font-medium">{value}</span>
       )}
       iconType="circle"
-      iconSize={10}
+      iconSize={12}
     />
 
     {/* On-Time */}
