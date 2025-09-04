@@ -17,7 +17,7 @@ const GenderDiversity = () => {
   const femaleStroke = (femalePercentage / 100) * circumference;
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 w-full max-w-sm flex flex-col items-center">
+<div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 h-full min-h-[400px] flex justify-between flex-col items-center">
       {/* Title */}
       <h2 className="text-lg font-semibold text-gray-800 mb-6">
         Gender Diversity
@@ -34,7 +34,7 @@ const GenderDiversity = () => {
             fill="none"
             stroke="#3b82f6"
             strokeWidth="8"
-            strokeDasharray={`${maleStroke} + ${circumference}`}
+            strokeDasharray={`${maleStroke} ${circumference}`}
             strokeDashoffset="0"
             transform="rotate(-90 18 18)"
           />

@@ -63,7 +63,7 @@ const CompanyAnnouncements = () => {
                 {item.tags.map((tag, i) => (
                   <span
                     key={i}
-                    className={`px-2 py-0.5 text-xs rounded-full ${tag.color}`}
+                    className={`px-2 py-0.5  text-sm md:text-xs rounded-full ${tag.color}`}
                   >
                     {tag.label}
                   </span>

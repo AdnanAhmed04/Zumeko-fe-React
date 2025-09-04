@@ -32,12 +32,12 @@ const TeamLeaveCalendar = () => {
     },
   ];
 
-  // Map leave.type to a unique icon (your provided SVGs)
+  // Map leave.type to a unique icon
   const leaveIcons = {
-    "Vacation Leave": <Plane className="h-4 w-4 text-blue-500" />,
+    "Vacation Leave": <Plane className="h-5 w-5 text-blue-500" />,
     "Sick Leave": (
       <svg xmlns="http://www.w3.org/2000/svg"
-        className="lucide lucide-heart h-4 w-4 text-red-500"
+        className="lucide lucide-heart h-5 w-5 text-red-500"
         fill="none" stroke="currentColor" strokeWidth="2"
         strokeLinecap="round" strokeLinejoin="round"
         viewBox="0 0 24 24">
@@ -46,7 +46,7 @@ const TeamLeaveCalendar = () => {
     ),
     "Personal Leave": (
       <svg xmlns="http://www.w3.org/2000/svg"
-        className="lucide lucide-briefcase h-4 w-4 text-purple-500"
+        className="lucide lucide-briefcase h-5 w-5 text-purple-500"
         fill="none" stroke="currentColor" strokeWidth="2"
         strokeLinecap="round" strokeLinejoin="round"
         viewBox="0 0 24 24">
@@ -73,15 +73,15 @@ const TeamLeaveCalendar = () => {
              strokeWidth="2" 
              strokeLinecap="round" 
              strokeLinejoin="round" 
-             className="lucide lucide-calendar h-5 w-5 mr-2 text-blue-600">
+             className="lucide lucide-calendar h-6 w-6 mr-2 text-blue-600">
           <path d="M8 2v4"></path>
           <path d="M16 2v4"></path>
           <rect width="18" height="18" x="3" y="4" rx="2"></rect>
           <path d="M3 10h18"></path>
         </svg>
-        <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Team Leave Calendar</h2>
+        <h2 className="text-xl sm:text-xl font-semibold text-gray-800">Team Leave Calendar</h2>
       </div>
-      <p className="text-gray-500 mb-2 text-sm sm:text-base">Who's out this week</p>
+      <p className="text-gray-500 mb-2 text-base sm:text-base">Who's out this week</p>
       <ul className="space-y-3 flex-grow overflow-auto">
         {leaveData.map((leave) => (
           <li
@@ -89,12 +89,12 @@ const TeamLeaveCalendar = () => {
             className="flex items-center justify-between bg-gray-50 p-3 rounded-lg transition-colors duration-200"
           >
             <div className="flex items-center">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full mr-3 flex items-center justify-center text-gray-600 font-medium text-sm">
+              <div className="w-10 h-10 sm:w-10 sm:h-10 bg-gray-100 rounded-full mr-3 flex items-center justify-center text-gray-600 font-medium text-base">
                 {leave.name.charAt(0)}
               </div>
               <div>
-                <p className="text-gray-800 font-semibold text-sm sm:text-base">{leave.name}</p>
-                <p className="flex items-center text-xs sm:text-sm font-medium">
+                <p className="text-gray-800 font-semibold text-base sm:text-base">{leave.name}</p>
+                <p className="flex items-center text-sm sm:text-sm font-medium">
                   <span className="mr-2">
                     {leaveIcons[leave.type]}
                   </span>
@@ -103,10 +103,10 @@ const TeamLeaveCalendar = () => {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-gray-800 font-semibold text-xs sm:text-sm">{leave.duration}</p>
-              <p className="text-gray-500 text-xs">{leave.dates}</p>
+              <p className="text-gray-800 font-semibold text-sm sm:text-sm">{leave.duration}</p>
+              <p className="text-gray-500 text-sm">{leave.dates}</p>
               <span
-                className={`inline-block text-xs font-medium px-2 py-1 rounded-full mt-1 ${getStatusStyles(leave.status)}`}
+                className={`inline-block text-sm font-medium px-2 py-1 rounded-full mt-1 ${getStatusStyles(leave.status)}`}
               >
                 {leave.status}
               </span>
@@ -116,7 +116,7 @@ const TeamLeaveCalendar = () => {
       </ul>
       <a
         href="#"
-        className=" mt-4 flex justify-center text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors duration-200"
+        className="mt-4 flex justify-center text-blue-600 hover:text-blue-800 text-base sm:text-sm font-medium transition-colors duration-200"
       >
         View full calendar →
       </a>
