@@ -42,10 +42,10 @@ const CompanyAnnouncements = () => {
     <div className="p-6 bg-white shadow rounded-2xl">
       {/* Header */}
       <div className="mb-4">
-        <h2 className="text-xl font-semibold flex items-center gap-2">
+        <h2 className=" text-2xl md:text-xl font-semibold flex items-center gap-2">
           📢 Company Announcements
         </h2>
-        <p className="text-gray-500 text-sm">Latest updates and news</p>
+        <p className="text-gray-500 text-lg md:text-sm">Latest updates and news</p>
       </div>
 
       {/* Announcements List */}
@@ -55,9 +55,9 @@ const CompanyAnnouncements = () => {
             key={item.id}
             className="p-4 bg-gray-50 rounded-xl flex flex-col gap-2 hover:shadow transition"
           >
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold flex items-center gap-1">
-                {item.pinned && <span className="text-red-500">📌</span>} {item.title}
+            <div className="flex items-center justify-between ">
+              <h3 className="font-semibold flex items-center gap-1 text-xl md:text-sm">
+                {item.pinned && <span className="text-red-500 ">📌</span>} {item.title}
               </h3>
               <div className="flex gap-2">
                 {item.tags.map((tag, i) => (
@@ -71,12 +71,12 @@ const CompanyAnnouncements = () => {
               </div>
             </div>
 
-            <p className="text-gray-600 text-sm">{item.description}</p>
+            <p className="text-gray-600 text-lg md:text-sm">{item.description}</p>
 
-            <div className="flex items-center justify-between text-sm text-gray-500">
+            <div className="flex items-center justify-between text-sm md:text-sm text-gray-500">
               <div className="flex items-center gap-4">
                 <span className="flex items-center gap-1">
-                  <Calendar size={14} /> {item.date}
+                  <Calendar size={16} /> {item.date}
                 </span>
                 <span className="flex items-center gap-1">
                   <Users size={14} /> {item.team}
