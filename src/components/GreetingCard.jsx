@@ -24,7 +24,7 @@ const GreetingCard = () => {
           <span className="text-md sm:text-xl">📅</span> March 15, 2024
         </div>
         <div className="flex items-center gap-4 sm:gap-2 bg-blue-500/40 px-6 py-4 sm:px-4 sm:py-2 rounded-full text-xl sm:text-sm">
-          <span className="text-md sm:text-xl">🏢</span> All Branches
+          <span className="text-md ">🏢</span> All Branches
         </div>
         <div className="flex items-center gap-4 sm:gap-2 bg-blue-500/40 px-6 py-4 sm:px-4 sm:py-2 rounded-full text-xl sm:text-sm">
           <span className="text-md sm:text-xl">👥</span> 105 Active Employees
