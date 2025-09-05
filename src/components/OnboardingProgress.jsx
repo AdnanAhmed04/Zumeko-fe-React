@@ -19,7 +19,7 @@ const OnboardingProgress = () => {
   return (
 <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 h-full min-h-[400px] flex justify-between flex-col items-center">
       {/* Title */}
-      <h2 className="text-lg font-semibold text-gray-800 mb-6">
+      <h2 className="text-xl md:text-lg font-semibold text-gray-800 mb-6">
         Onboarding Progress
       </h2>
 

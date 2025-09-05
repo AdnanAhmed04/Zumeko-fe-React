@@ -22,7 +22,7 @@ const EmploymentStatus = () => {
   return (
 <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 h-full min-h-[400px] flex justify-between flex-col items-center">
       {/* Title */}
-      <h2 className="text-lg font-semibold text-gray-800 mb-6">
+      <h2 className="text-xl md:text-lg font-semibold text-gray-800 mb-6">
         Employment Status
       </h2>
 
@@ -72,12 +72,12 @@ const EmploymentStatus = () => {
         {/* Centered Total */}
         <div className="absolute flex flex-col items-center justify-center">
           <span className="text-3xl font-bold text-gray-900">{total}</span>
-          <p className="text-sm text-gray-500">Total</p>
+          <p className="text-lg md:text-sm text-gray-500">Total</p>
         </div>
       </div>
 
       {/* Legend */}
-      <div className="mt-6 w-full space-y-3 text-sm">
+      <div className="mt-6 w-full space-y-3 text-lg md:text-sm">
         {/* Full-time */}
         <div className="flex items-center justify-between bg-gray-50 p-3 rounded-xl">
           <div className="flex items-center">
@@ -86,7 +86,7 @@ const EmploymentStatus = () => {
           </div>
           <div className="text-right">
             <p className="font-semibold text-gray-800">{fullTime}</p>
-            <p className="text-gray-500 text-xs">
+            <p className="text-gray-500 test-md md:text-xs">
               {fullTimePercentage.toFixed(1)}%
             </p>
           </div>
@@ -100,7 +100,7 @@ const EmploymentStatus = () => {
           </div>
           <div className="text-right">
             <p className="font-semibold text-gray-800">{partTime}</p>
-            <p className="text-gray-500 text-xs">
+            <p className="text-gray-500 text-lg md:text-xs">
               {partTimePercentage.toFixed(1)}%
             </p>
           </div>
@@ -114,7 +114,7 @@ const EmploymentStatus = () => {
           </div>
           <div className="text-right">
             <p className="font-semibold text-gray-800">{contract}</p>
-            <p className="text-gray-500 text-xs">
+            <p className="text-gray-500 test-md md:text-xs">
               {contractPercentage.toFixed(1)}%
             </p>
           </div>
