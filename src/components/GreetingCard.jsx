@@ -9,10 +9,10 @@ const GreetingCard = () => {
           👋
         </span>
         <div>
-          <h2 className="text-4xl sm:text-3xl font-extrabold sm:font-bold">
+          <h2 className="text-2xl sm:text-3xl font-extrabold sm:font-bold">
             Good morning, Margelyn!
           </h2>
-          <p className="text-2xl sm:text-lg opacity-90">
+          <p className="text-md sm:text-lg opacity-90">
             Ready to make today productive?
           </p>
         </div>
@@ -21,13 +21,13 @@ const GreetingCard = () => {
       {/* Info Pills */}
       <div className="flex flex-col sm:flex-row flex-wrap gap-5 sm:gap-3 mt-10 sm:mt-6 font-semibold">
         <div className="flex items-center gap-4 sm:gap-2 bg-blue-500/40 px-6 py-4 sm:px-4 sm:py-2 rounded-full text-xl sm:text-sm">
-          <span className="text-3xl sm:text-xl">📅</span> March 15, 2024
+          <span className="text-md sm:text-xl">📅</span> March 15, 2024
         </div>
         <div className="flex items-center gap-4 sm:gap-2 bg-blue-500/40 px-6 py-4 sm:px-4 sm:py-2 rounded-full text-xl sm:text-sm">
-          <span className="text-3xl sm:text-xl">🏢</span> All Branches
+          <span className="text-md sm:text-xl">🏢</span> All Branches
         </div>
         <div className="flex items-center gap-4 sm:gap-2 bg-blue-500/40 px-6 py-4 sm:px-4 sm:py-2 rounded-full text-xl sm:text-sm">
-          <span className="text-3xl sm:text-xl">👥</span> 105 Active Employees
+          <span className="text-md sm:text-xl">👥</span> 105 Active Employees
         </div>
       </div>
 
@@ -35,7 +35,7 @@ const GreetingCard = () => {
       <hr className="border-white/20 my-10 sm:my-6" />
 
       {/* Footer */}
-      <div className="flex flex-col sm:flex-row justify-between gap-4 sm:gap-2 text-xl sm:text-sm opacity-80">
+      <div className="flex flex-col sm:flex-row justify-between gap-4 sm:gap-2 text-md sm:text-sm opacity-80">
         <p>Your organization is running smoothly today</p>
         <p>Last updated: Just now</p>
       </div>
