@@ -98,7 +98,7 @@ const LeaveSummary = () => {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-3xl md:text-xl font-semibold text-gray-800">
-            📅 Leave Summary
+            Leave Summary
           </h2>
           <p className="text-gray-500 text-sm">Leave types and counts taken</p>
         </div>
