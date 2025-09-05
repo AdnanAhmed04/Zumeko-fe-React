@@ -93,16 +93,16 @@ const LeaveSummary = () => {
   };
 
   return (
-    <div className="p-6 bg-white shadow rounded-2xl">
+    <div className=" p-3 md:p-6 bg-white shadow rounded-2xl">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-3xl md:text-xl font-semibold text-gray-800">
+          <h2 className="text-lg md:text-xl font-semibold text-gray-800">
             Leave Summary
           </h2>
           <p className="text-gray-500 text-sm">Leave types and counts taken</p>
         </div>
-        <div className="space-x-2 text-xl  md:text-lg ">
+        <div className=" text-md flex justify-center gap-1 md:gap-3  md:text-lg ">
           <button
             className={getButtonStyles("weekly")}
             onClick={() => setPeriod("weekly")}
@@ -133,7 +133,7 @@ const LeaveSummary = () => {
             <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
             <Legend
               formatter={(value) => (
-                <span className="text-gray-600 font-medium">{value}</span>
+                <span className="text-gray-600 font-normal">{value}</span>
               )}
               iconType="circle"
               iconSize={12}
@@ -150,19 +150,19 @@ const LeaveSummary = () => {
       <div className="flex justify-around mt-6 text-center">
         <div>
           <p className="text-red-500 text-xl  md:text-lg  font-semibold">{totals[period].Sick}</p>
-          <p className="text-lg md:text-sm text-gray-600">Sick Leave</p>
+          <p className="text-md md:text-sm text-gray-600">Sick Leave</p>
         </div>
         <div>
           <p className="text-blue-500 text-xl  md:text-lg  font-semibold">{totals[period].Vacation}</p>
-          <p className="text-lg md:text-sm text-gray-600">Vacation</p>
+          <p className="text-md md:text-sm text-gray-600">Vacation</p>
         </div>
         <div>
           <p className="text-purple-500 text-xl  md:text-lg font-semibold">{totals[period].Personal}</p>
-          <p className="text-lg md:text-sm text-gray-600">Personal</p>
+          <p className="text-md md:text-sm text-gray-600">Personal</p>
         </div>
         <div>
           <p className="text-yellow-500 text-xl  md:text-lg  font-semibold">{totals[period].Emergency}</p>
-          <p className="text-lg md:text-sm text-gray-600">Emergency</p>
+          <p className="text-md md:text-sm text-gray-600">Emergency</p>
         </div>
       </div>
     </div>

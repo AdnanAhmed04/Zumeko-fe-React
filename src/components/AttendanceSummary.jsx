@@ -80,12 +80,12 @@ export default function AttendanceSummary() {
   };
 
   return (
-    <div className="p-6 bg-white rounded-2xl  border-2 border-gray-100">
+    <div className="p-3 md:p-6 bg-white rounded-2xl  border-2 border-gray-100">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl md:text-xl font-semibold text-gray-800">
+        <h2 className="text-lg md:text-xl font-semibold text-gray-800">
           Attendance Summary
         </h2>
-        <div className="flex gap-3 text-xl  md:text-lg ">
+        <div className="flex gap-3 text-md  md:text-lg ">
           <button
             className={getButtonStyles("week")}
             onClick={() => setPeriod("week")}
