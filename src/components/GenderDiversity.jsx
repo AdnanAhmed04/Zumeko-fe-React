@@ -1,32 +1,65 @@
 import React from "react";
+import useApi from "../hooks/useApi";
+import endpoints from "../services/endpoints";
 
 const GenderDiversity = () => {
-  const total = 100;
-  const maleCount = 65;
-  const femaleCount = 35;
+  const { data, loading, error } = useApi(endpoints.genderDiversity);
 
-  const malePercentage = (maleCount / total) * 100;
-  const femalePercentage = (femaleCount / total) * 100;
+  if (loading) {
+    return (
+      <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 h-full min-h-[400px] flex justify-center items-center">
+        <p className="text-gray-500">Loading...</p>
+      </div>
+    );
+  }
 
-  // Circle properties
+  if (error) {
+    return (
+      <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 h-full min-h-[400px] flex justify-center items-center">
+        <p className="text-red-500">Error fetching data</p>
+      </div>
+    );
+  }
+
+  // ✅ Flexible parsing depending on API response
+  let maleCount = 0;
+  let femaleCount = 0;
+
+  if (data) {
+    if (data.male !== undefined && data.female !== undefined) {
+      // Case 1: { male: 65, female: 35 }
+      maleCount = data.male;
+      femaleCount = data.female;
+    } else if (data.data?.male !== undefined && data.data?.female !== undefined) {
+      // Case 2: { data: { male: 65, female: 35 } }
+      maleCount = data.data.male;
+      femaleCount = data.data.female;
+    } else if (Array.isArray(data)) {
+      // Case 3: [ { gender: "Male", count: 65 }, { gender: "Female", count: 35 } ]
+      const maleObj = data.find((item) => item.gender?.toLowerCase() === "male");
+      const femaleObj = data.find((item) => item.gender?.toLowerCase() === "female");
+      maleCount = maleObj?.count || 0;
+      femaleCount = femaleObj?.count || 0;
+    }
+  }
+
+  const total = maleCount + femaleCount;
+  const malePercentage = total ? (maleCount / total) * 100 : 0;
+  const femalePercentage = total ? (femaleCount / total) * 100 : 0;
+
   const radius = 12.9155;
   const circumference = 2 * Math.PI * radius;
-
-  // Stroke lengths
   const maleStroke = (malePercentage / 100) * circumference;
   const femaleStroke = (femalePercentage / 100) * circumference;
 
   return (
-<div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 h-full min-h-[400px] flex justify-between flex-col items-center">
-      {/* Title */}
+    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 h-full min-h-[400px] flex justify-between flex-col items-center">
       <h2 className="text-lg font-semibold text-gray-800 mb-6">
         Gender Diversity
       </h2>
 
-      {/* Donut Chart */}
       <div className="relative w-48 h-48 flex items-center justify-center">
         <svg className="w-full h-full" viewBox="0 0 36 36">
-          {/* Male Portion */}
           <circle
             cx="18"
             cy="18"
@@ -38,8 +71,6 @@ const GenderDiversity = () => {
             strokeDashoffset="0"
             transform="rotate(-90 18 18)"
           />
-
-          {/* Female Portion */}
           <circle
             cx="18"
             cy="18"
@@ -52,17 +83,13 @@ const GenderDiversity = () => {
             transform="rotate(-90 18 18)"
           />
         </svg>
-
-        {/* Centered Total */}
         <div className="absolute flex flex-col items-center justify-center">
           <span className="text-3xl font-bold text-gray-900">{total}</span>
           <p className="text-sm text-gray-500">Total</p>
         </div>
       </div>
 
-      {/* Legend Boxes */}
       <div className="mt-6 w-full space-y-3 text-sm">
-        {/* Male */}
         <div className="flex items-center justify-between bg-gray-50 p-3 rounded-xl">
           <div className="flex items-center">
             <span className="w-3.5 h-3.5 bg-blue-500 rounded-full mr-2"></span>
@@ -70,13 +97,10 @@ const GenderDiversity = () => {
           </div>
           <div className="text-right">
             <p className="font-semibold text-gray-800">{maleCount}</p>
-            <p className="text-gray-500 text-xs">
-              {malePercentage.toFixed(1)}%
-            </p>
+            <p className="text-gray-500 text-xs">{malePercentage.toFixed(1)}%</p>
           </div>
         </div>
 
-        {/* Female */}
         <div className="flex items-center justify-between bg-gray-50 p-3 rounded-xl">
           <div className="flex items-center">
             <span className="w-3.5 h-3.5 bg-pink-500 rounded-full mr-2"></span>
@@ -84,9 +108,7 @@ const GenderDiversity = () => {
           </div>
           <div className="text-right">
             <p className="font-semibold text-gray-800">{femaleCount}</p>
-            <p className="text-gray-500 text-xs">
-              {femalePercentage.toFixed(1)}%
-            </p>
+            <p className="text-gray-500 text-xs">{femalePercentage.toFixed(1)}%</p>
           </div>
         </div>
       </div>
