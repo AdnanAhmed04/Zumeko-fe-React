@@ -1,6 +1,6 @@
 const endpoints = {
   genderDiversity: "/users/gender-diversity",
-  employmentStatus: "/employment-status",
+  employmentStatus: "/users/employment-status",
   onboardingRequests: "/onboarding-requests",
   upcomingBirthdays: "/upcoming-birthdays-widget",
   pendingRequests: "/upcoming?status=PENDING",

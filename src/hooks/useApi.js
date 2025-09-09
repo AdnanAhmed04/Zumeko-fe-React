@@ -6,10 +6,8 @@ const useApi = (endpoint, params = {}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // ✅ freeze endpoint so it doesn’t cause loops
   const stableEndpoint = useRef(endpoint).current;
 
-  // ✅ freeze params if it’s an object (avoid re-renders causing loops)
   const stableParams = useRef(params).current;
 
   useEffect(() => {
@@ -26,9 +24,8 @@ const useApi = (endpoint, params = {}) => {
     fetchData();
   }, [stableEndpoint, stableParams]);
 
-  // ✅ Debug logging only when data or error changes
   useEffect(() => {
-    if (data) console.log("✅ API Response:", stableEndpoint, data);
+    // if (data) console.log("✅ API Response:", stableEndpoint, data);
     if (error) console.error("❌ API Error:", stableEndpoint, error);
   }, [data, error, stableEndpoint]);
 

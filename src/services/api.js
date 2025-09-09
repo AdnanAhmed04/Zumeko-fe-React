@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Environment variables in Vite
 const API_URL = import.meta.env.VITE_API_URL;
 const API_TOKEN = import.meta.env.VITE_API_TOKEN;
 
@@ -23,6 +22,7 @@ export const getData = async (endpoint, params = {}) => {
   try {
     console.log("🌍 Fetching:", `${API_URL}${endpoint}`, params);
     const response = await api.get(endpoint, { params });
+    console.log('employment status response', response.data.data.employmentStatus);
     return response.data;
   } catch (error) {
     console.error(
