@@ -29,22 +29,19 @@ const OnboardingProgress = () => {
   const completedPercentage = total > 0 ? (completed / total) * 100 : 0;
   const requestedPercentage = total > 0 ? (requested / total) * 100 : 0;
 
-  // Circle properties
   const radius = 12.9155;
   const circumference = 2 * Math.PI * radius;
 
-  // Stroke lengths
   const completedStroke = (completedPercentage / 100) * circumference;
   const requestedStroke = (requestedPercentage / 100) * circumference;
 
   return (
     <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 h-full min-h-[400px] flex justify-between flex-col items-center">
-      {/* Title */}
+
       <h2 className="text-xl md:text-lg font-semibold text-gray-800 mb-6">
         Onboarding Progress
       </h2>
 
-      {/* Donut Chart */}
       <div className="relative w-48 h-48 flex items-center justify-center">
         <svg className="w-full h-full" viewBox="0 0 36 36">
           {/* Completed */}
@@ -81,7 +78,6 @@ const OnboardingProgress = () => {
         </div>
       </div>
 
-      {/* Legend */}
       <div className="mt-6 w-full space-y-3 text-sm">
         {/* Completed */}
         <div className="flex items-center justify-between bg-gray-50 p-3 rounded-xl">

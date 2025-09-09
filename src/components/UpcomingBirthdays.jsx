@@ -11,7 +11,6 @@ const UpcomingBirthdays = () => {
         const response = await getData(endpoints.upcomingBirthdays);
         console.log("upcoming birthdays response", response);
 
-        // adjust based on your API shape
         const data = response?.data || response || [];
         setBirthdays(data);
       } catch (error) {
@@ -24,7 +23,7 @@ const UpcomingBirthdays = () => {
 
   return (
     <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 min-h-[300px] flex flex-col">
-      {/* Header */}
+
       <div className="flex items-center mb-1">
         <span className="text-blue-500 text-xl mr-2">
           <svg
@@ -51,7 +50,6 @@ const UpcomingBirthdays = () => {
       </div>
       <p className="text-gray-500 text-sm mb-4">Next 7 days</p>
 
-      {/* Birthday List */}
       <div className="flex-1 flex items-center justify-center">
         {birthdays.length > 0 ? (
           <div className="w-full space-y-3">
@@ -60,10 +58,8 @@ const UpcomingBirthdays = () => {
                 key={index}
                 className="flex items-center bg-gray-50 p-3 rounded-xl hover:shadow-sm transition"
               >
-                {/* Avatar Placeholder */}
                 <div className="w-10 h-10 flex-shrink-0 bg-gray-200 rounded-full mr-3"></div>
 
-                {/* Info */}
                 <div className="flex flex-col overflow-hidden">
                   <p className="text-gray-800 text-sm font-medium truncate w-40">
                     {person.name}
@@ -73,7 +69,6 @@ const UpcomingBirthdays = () => {
                   </p>
                 </div>
 
-                {/* Date */}
                 <p className="ml-auto text-sm font-medium whitespace-nowrap">
                   {person.date}
                 </p>
