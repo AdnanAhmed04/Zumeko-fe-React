@@ -40,7 +40,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             <NavLink
               key={to}
               to={to}
-              onClick={() => setIsOpen(false)} // close on link click
+              onClick={() => setIsOpen(false)} 
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded-lg transition 
                 ${isActive

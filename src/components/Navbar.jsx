@@ -5,17 +5,14 @@ export default function Navbar({ isOpen, setIsOpen }) {
   return (
     <nav className="w-full bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Left Logo */}
-        <div className="flex items-center gap-2 ">
+        <div className="absolute left-20 md:left-30 transform -translate-x-1/2">
           <img
-            src="../assets/images/logo-white2.svg"
+            src="/src/assets/images/logo1.png"
             alt="Logo"
-            className="w-12 h-12"
+            className="w-30 h-12 md:w-48 md:h-12"
           />
         </div>
-
-        {/* Desktop Icons */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4 ml-auto">
           <button className="p-2 rounded-full hover:bg-indigo-200">
             <Search size={20} />
           </button>
@@ -26,7 +23,7 @@ export default function Navbar({ isOpen, setIsOpen }) {
             <Moon size={20} />
           </button>
 
-          {/* Profile */}
+
           <div className="flex items-center gap-2 ml-4">
             <img
               src="https://i.pravatar.cc/40"
@@ -40,8 +37,8 @@ export default function Navbar({ isOpen, setIsOpen }) {
           </div>
         </div>
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden">
+
+        <div className="md:hidden ml-auto">
           <button
             className="p-2 rounded-md hover:bg-indigo-200"
             onClick={() => setIsOpen(!isOpen)}
