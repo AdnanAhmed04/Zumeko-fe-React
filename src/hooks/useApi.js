@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getData } from "../services/api";
 
 const useApi = (endpoint, params = {}) => {
@@ -6,10 +6,16 @@ const useApi = (endpoint, params = {}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // ✅ freeze endpoint so it doesn’t cause loops
+  const stableEndpoint = useRef(endpoint).current;
+
+  // ✅ freeze params if it’s an object (avoid re-renders causing loops)
+  const stableParams = useRef(params).current;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getData(endpoint, params);
+        const result = await getData(stableEndpoint, stableParams);
         setData(result);
       } catch (err) {
         setError(err);
@@ -18,13 +24,13 @@ const useApi = (endpoint, params = {}) => {
       }
     };
     fetchData();
-  }, [endpoint, params]);
+  }, [stableEndpoint, stableParams]);
 
-  // ✅ Debug logging whenever data or error changes
+  // ✅ Debug logging only when data or error changes
   useEffect(() => {
-    if (data) console.log("✅ API Response:", endpoint, data);
-    if (error) console.error("❌ API Error:", endpoint, error);
-  }, [data, error, endpoint]);
+    if (data) console.log("✅ API Response:", stableEndpoint, data);
+    if (error) console.error("❌ API Error:", stableEndpoint, error);
+  }, [data, error, stableEndpoint]);
 
   return { data, loading, error };
 };

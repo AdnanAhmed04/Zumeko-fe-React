@@ -21,26 +21,13 @@ const GenderDiversity = () => {
     );
   }
 
-  // ✅ Flexible parsing depending on API response
+  // ✅ Directly parse API response
   let maleCount = 0;
   let femaleCount = 0;
 
-  if (data) {
-    if (data.male !== undefined && data.female !== undefined) {
-      // Case 1: { male: 65, female: 35 }
-      maleCount = data.male;
-      femaleCount = data.female;
-    } else if (data.data?.male !== undefined && data.data?.female !== undefined) {
-      // Case 2: { data: { male: 65, female: 35 } }
-      maleCount = data.data.male;
-      femaleCount = data.data.female;
-    } else if (Array.isArray(data)) {
-      // Case 3: [ { gender: "Male", count: 65 }, { gender: "Female", count: 35 } ]
-      const maleObj = data.find((item) => item.gender?.toLowerCase() === "male");
-      const femaleObj = data.find((item) => item.gender?.toLowerCase() === "female");
-      maleCount = maleObj?.count || 0;
-      femaleCount = femaleObj?.count || 0;
-    }
+  if (data?.data?.diversity) {
+    maleCount = data.data.diversity.MALE || 0;
+    femaleCount = data.data.diversity.FEMALE || 0;
   }
 
   const total = maleCount + femaleCount;

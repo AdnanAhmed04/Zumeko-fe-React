@@ -21,10 +21,16 @@ const getApiInstance = () => {
 export const getData = async (endpoint, params = {}) => {
   const api = getApiInstance();
   try {
+    console.log("🌍 Fetching:", `${API_URL}${endpoint}`, params);
     const response = await api.get(endpoint, { params });
     return response.data;
   } catch (error) {
-    console.error("API GET Error:", endpoint, error.response?.data || error.message);
+    console.error(
+      "❌ API GET Error:",
+      endpoint,
+      error.response?.status,
+      error.response?.data || error.message
+    );
     throw error.response?.data || { message: "Unknown error" };
   }
 };

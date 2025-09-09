@@ -1,5 +1,5 @@
 const endpoints = {
-  genderDiversity: "/gender-diversity",
+  genderDiversity: "/users/gender-diversity",
   employmentStatus: "/employment-status",
   onboardingRequests: "/onboarding-requests",
   upcomingBirthdays: "/upcoming-birthdays-widget",
