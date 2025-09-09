@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getData } from "../services/api"; // use relative path if alias not set
+import { getData } from "../services/api"; 
 import endpoints from "../services/endpoints";
 
 const EmploymentStatus = () => {
@@ -11,7 +11,6 @@ const EmploymentStatus = () => {
         const response = await getData(endpoints.employmentStatus);
         console.log("employment status raw response", response);
 
-        // Safely extract data without crashing
         const status =
           response?.data?.employmentStatus ||
           response?.data?.data?.employmentStatus ||
@@ -35,17 +34,14 @@ const EmploymentStatus = () => {
     );
   }
 
-  const categories = Object.entries(data); // e.g. [["Head of Admin", 3], ["SQA", 5], ["Unassigned", 2]]
+  const categories = Object.entries(data); 
   const total = categories.reduce((sum, [, value]) => sum + value, 0);
 
-  // Circle properties
   const radius = 12.9155;
   const circumference = 2 * Math.PI * radius;
 
-  // Define a color palette
   const colors = ["#3b82f6", "#a855f7", "#f97316", "#10b981", "#ef4444", "#6366f1"];
 
-  // Compute stroke data
   let offset = 0;
   const circleSegments = categories.map(([label, value], index) => {
     const percentage = (value / total) * 100;

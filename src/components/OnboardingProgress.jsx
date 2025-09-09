@@ -1,12 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getData } from "../services/api"; 
+import endpoints from "../services/endpoints";
 
 const OnboardingProgress = () => {
-  const total = 11;
-  const completed = 8;
-  const inProgress = 3;
+  const [total, setTotal] = useState(0);
+  const [completed, setCompleted] = useState(0);
+  const [requested, setRequested] = useState(0);
 
-  const completedPercentage = (completed / total) * 100;
-  const inProgressPercentage = (inProgress / total) * 100;
+  useEffect(() => {
+    const fetchOnboarding = async () => {
+      try {
+        const response = await getData(endpoints.onboardingRequests);
+        console.log("onboarding response", response);
+
+        const data = response?.data || response || {};
+
+        setTotal(data.total || 0);
+        setCompleted(data.completed || 0);
+        setRequested(data.requested || 0);
+      } catch (error) {
+        console.error("Error fetching onboarding progress:", error);
+      }
+    };
+
+    fetchOnboarding();
+  }, []);
+
+  const completedPercentage = total > 0 ? (completed / total) * 100 : 0;
+  const requestedPercentage = total > 0 ? (requested / total) * 100 : 0;
 
   // Circle properties
   const radius = 12.9155;
@@ -14,10 +35,10 @@ const OnboardingProgress = () => {
 
   // Stroke lengths
   const completedStroke = (completedPercentage / 100) * circumference;
-  const inProgressStroke = (inProgressPercentage / 100) * circumference;
+  const requestedStroke = (requestedPercentage / 100) * circumference;
 
   return (
-<div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 h-full min-h-[400px] flex justify-between flex-col items-center">
+    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 h-full min-h-[400px] flex justify-between flex-col items-center">
       {/* Title */}
       <h2 className="text-xl md:text-lg font-semibold text-gray-800 mb-6">
         Onboarding Progress
@@ -32,22 +53,22 @@ const OnboardingProgress = () => {
             cy="18"
             r={radius}
             fill="none"
-            stroke="#22c55e" // green
+            stroke="#22c55e"
             strokeWidth="8"
             strokeDasharray={`${completedStroke} ${circumference}`}
             strokeDashoffset="0"
             transform="rotate(-90 18 18)"
           />
 
-          {/* In Progress */}
+          {/* Requested */}
           <circle
             cx="18"
             cy="18"
             r={radius}
             fill="none"
-            stroke="#f97316" // orange
+            stroke="#f97316"
             strokeWidth="8"
-            strokeDasharray={`${inProgressStroke} ${circumference}`}
+            strokeDasharray={`${requestedStroke} ${circumference}`}
             strokeDashoffset={-completedStroke}
             transform="rotate(-90 18 18)"
           />
@@ -76,16 +97,16 @@ const OnboardingProgress = () => {
           </div>
         </div>
 
-        {/* In Progress */}
+        {/* Requested */}
         <div className="flex items-center justify-between bg-gray-50 p-3 rounded-xl">
           <div className="flex items-center">
             <span className="w-3.5 h-3.5 bg-orange-500 rounded-full mr-2"></span>
-            <p className="text-gray-700">In Progress</p>
+            <p className="text-gray-700">Requested</p>
           </div>
           <div className="text-right">
-            <p className="font-semibold text-gray-800">{inProgress}</p>
+            <p className="font-semibold text-gray-800">{requested}</p>
             <p className="text-gray-500 text-xs">
-              {inProgressPercentage.toFixed(1)}%
+              {requestedPercentage.toFixed(1)}%
             </p>
           </div>
         </div>
