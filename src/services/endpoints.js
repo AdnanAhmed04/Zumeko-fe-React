@@ -6,7 +6,10 @@ const endpoints = {
   pendingRequests: "/users/upcoming?status=PENDING",
   joiningAnniversary: "/users/joining-anniversary-widget",
   announcements: "/announcement/all?page=1&limit=10",
-   attendanceSummary: "/attendances/summary-chart",
+  attendanceSummary: "/attendances/summary-chart",
+  leaveStats: "/leaves/types/stats",
+
+
 };
 
 export default endpoints;

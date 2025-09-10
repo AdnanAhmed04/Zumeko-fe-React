@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -8,48 +8,49 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { getData } from "../services/api";
+import endpoints from "../services/endpoints";
 
-const dataSets = {
-  weekly: [
-    { day: "Mon", Sick: 2, Vacation: 4, Personal: 1, Emergency: 0 },
-    { day: "Tue", Sick: 1, Vacation: 3, Personal: 2, Emergency: 1 },
-    { day: "Wed", Sick: 2, Vacation: 3, Personal: 1, Emergency: 0 },
-    { day: "Thu", Sick: 1, Vacation: 4, Personal: 2, Emergency: 0 },
-    { day: "Fri", Sick: 2, Vacation: 5, Personal: 1, Emergency: 1 },
-    { day: "Sat", Sick: 0, Vacation: 1, Personal: 1, Emergency: 0 },
-    { day: "Sun", Sick: 0, Vacation: 1, Personal: 0, Emergency: 0 },
-  ],
-  monthly: [
-    { week: "Week 1", Sick: 5, Vacation: 12, Personal: 4, Emergency: 1 },
-    { week: "Week 2", Sick: 4, Vacation: 11, Personal: 3, Emergency: 2 },
-    { week: "Week 3", Sick: 6, Vacation: 10, Personal: 5, Emergency: 0 },
-    { week: "Week 4", Sick: 3, Vacation: 13, Personal: 2, Emergency: 1 },
-  ],
-  yearly: [
-    { month: "Jan", Sick: 15, Vacation: 50, Personal: 20, Emergency: 5 },
-    { month: "Feb", Sick: 14, Vacation: 48, Personal: 18, Emergency: 6 },
-    { month: "Mar", Sick: 16, Vacation: 45, Personal: 22, Emergency: 4 },
-    { month: "Apr", Sick: 13, Vacation: 52, Personal: 19, Emergency: 3 },
-    { month: "May", Sick: 17, Vacation: 49, Personal: 21, Emergency: 5 },
-    { month: "Jun", Sick: 15, Vacation: 51, Personal: 20, Emergency: 4 },
-    { month: "Jul", Sick: 14, Vacation: 47, Personal: 23, Emergency: 6 },
-    { month: "Aug", Sick: 16, Vacation: 50, Personal: 18, Emergency: 5 },
-    { month: "Sep", Sick: 15, Vacation: 48, Personal: 20, Emergency: 4 },
-    { month: "Oct", Sick: 14, Vacation: 49, Personal: 19, Emergency: 5 },
-    { month: "Nov", Sick: 16, Vacation: 46, Personal: 21, Emergency: 6 },
-    { month: "Dec", Sick: 15, Vacation: 50, Personal: 20, Emergency: 4 },
-  ],
-};
-
-const LeaveSummary = () => {
+export default function LeaveSummary() {
   const [period, setPeriod] = useState("weekly");
-  const [fontSize, setFontSize] = useState(14); // default for small screens
+  const [data, setData] = useState([]);
 
   const xAxisKey = {
     weekly: "day",
     monthly: "week",
     yearly: "month",
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getData(`${endpoints.leaveStats}?unit=${period}`);
+        
+        // ✅ Console raw response
+        console.log(`🌍 Raw ${period} Leave API Response:`, res);
+
+        if (res && res.data) {
+          // Transform API data to chart format
+          const transformed = res.data.map((item) => ({
+            label: item.label || item.day || item.week || item.month,
+            Sick: item.Sick || 0,
+            Vacation: item.Vacation || 0,
+            Personal: item.Personal || 0,
+            Emergency: item.Emergency || 0,
+          }));
+
+          // ✅ Console transformed data
+          console.log(`📊 Transformed ${period} Leave Data:`, transformed);
+
+          setData(transformed);
+        }
+      } catch (err) {
+        console.error(`❌ ${period} Leave fetch error:`, err);
+      }
+    };
+
+    fetchData();
+  }, [period]);
 
   const getButtonStyles = (buttonPeriod) =>
     period === buttonPeriod
@@ -58,42 +59,34 @@ const LeaveSummary = () => {
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
+      const row = payload[0].payload;
       return (
         <div className="p-2 bg-white border border-gray-200 rounded shadow-lg text-sm">
-          <p className="font-medium">{payload[0].payload[xAxisKey[period]]}</p>
-          <p><span className="font-bold text-red-600">Sick:</span> {payload[0].payload.Sick}</p>
-          <p><span className="font-bold text-blue-600">Vacation:</span> {payload[0].payload.Vacation}</p>
-          <p><span className="font-bold text-purple-600">Personal:</span> {payload[0].payload.Personal}</p>
-          <p><span className="font-bold text-yellow-600">Emergency:</span> {payload[0].payload.Emergency}</p>
+          <p className="font-medium">{row.label}</p>
+          <p><span className="font-bold text-red-600">Sick:</span> {row.Sick}</p>
+          <p><span className="font-bold text-blue-600">Vacation:</span> {row.Vacation}</p>
+          <p><span className="font-bold text-purple-600">Personal:</span> {row.Personal}</p>
+          <p><span className="font-bold text-yellow-600">Emergency:</span> {row.Emergency}</p>
         </div>
       );
     }
     return null;
   };
 
-  const totals = {
-    weekly: {
-      Sick: dataSets.weekly.reduce((sum, day) => sum + day.Sick, 0),
-      Vacation: dataSets.weekly.reduce((sum, day) => sum + day.Vacation, 0),
-      Personal: dataSets.weekly.reduce((sum, day) => sum + day.Personal, 0),
-      Emergency: dataSets.weekly.reduce((sum, day) => sum + day.Emergency, 0),
+  // Calculate totals dynamically
+  const totals = data.reduce(
+    (acc, curr) => {
+      acc.Sick += curr.Sick;
+      acc.Vacation += curr.Vacation;
+      acc.Personal += curr.Personal;
+      acc.Emergency += curr.Emergency;
+      return acc;
     },
-    monthly: {
-      Sick: dataSets.monthly.reduce((sum, week) => sum + week.Sick, 0),
-      Vacation: dataSets.monthly.reduce((sum, week) => sum + week.Vacation, 0),
-      Personal: dataSets.monthly.reduce((sum, week) => sum + week.Personal, 0),
-      Emergency: dataSets.monthly.reduce((sum, week) => sum + week.Emergency, 0),
-    },
-    yearly: {
-      Sick: dataSets.yearly.reduce((sum, month) => sum + month.Sick, 0),
-      Vacation: dataSets.yearly.reduce((sum, month) => sum + month.Vacation, 0),
-      Personal: dataSets.yearly.reduce((sum, month) => sum + month.Personal, 0),
-      Emergency: dataSets.yearly.reduce((sum, month) => sum + month.Emergency, 0),
-    },
-  };
+    { Sick: 0, Vacation: 0, Personal: 0, Emergency: 0 }
+  );
 
   return (
-    <div className=" p-3 md:p-6 bg-white shadow rounded-2xl">
+    <div className="p-3 md:p-6 bg-white shadow rounded-2xl">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
@@ -102,39 +95,22 @@ const LeaveSummary = () => {
           </h2>
           <p className="text-gray-500 text-sm">Leave types and counts taken</p>
         </div>
-        <div className=" text-md flex justify-center gap-1 md:gap-3  md:text-lg ">
-          <button
-            className={getButtonStyles("weekly")}
-            onClick={() => setPeriod("weekly")}
-          >
-            Weekly
-          </button>
-          <button
-            className={getButtonStyles("monthly")}
-            onClick={() => setPeriod("monthly")}
-          >
-            Monthly
-          </button>
-          <button
-            className={getButtonStyles("yearly")}
-            onClick={() => setPeriod("yearly")}
-          >
-            Yearly
-          </button>
+        <div className="flex gap-1 md:gap-3 md:text-lg">
+          <button className={getButtonStyles("weekly")} onClick={() => setPeriod("weekly")}>Weekly</button>
+          <button className={getButtonStyles("monthly")} onClick={() => setPeriod("monthly")}>Monthly</button>
+          <button className={getButtonStyles("yearly")} onClick={() => setPeriod("yearly")}>Yearly</button>
         </div>
       </div>
 
       {/* Chart */}
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={dataSets[period]} barGap={8} barSize={70}>
-            <XAxis dataKey={xAxisKey[period]} stroke="#6b7280" tick={{ fontSize, fontWeight: 600, fill: "#374151" }} />
+          <BarChart data={data} barGap={8} barSize={50}>
+            <XAxis dataKey="label" stroke="#6b7280" tick={{ fontSize: 14, fontWeight: 600, fill: "#374151" }} />
             <YAxis hide />
             <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
             <Legend
-              formatter={(value) => (
-                <span className="text-gray-600 font-normal">{value}</span>
-              )}
+              formatter={(value) => <span className="text-gray-600 font-normal">{value}</span>}
               iconType="circle"
               iconSize={12}
             />
@@ -149,24 +125,22 @@ const LeaveSummary = () => {
       {/* Totals */}
       <div className="flex justify-around mt-6 text-center">
         <div>
-          <p className="text-red-500 text-xl  md:text-lg  font-semibold">{totals[period].Sick}</p>
+          <p className="text-red-500 text-xl md:text-lg font-semibold">{totals.Sick}</p>
           <p className="text-md md:text-sm text-gray-600">Sick Leave</p>
         </div>
         <div>
-          <p className="text-blue-500 text-xl  md:text-lg  font-semibold">{totals[period].Vacation}</p>
+          <p className="text-blue-500 text-xl md:text-lg font-semibold">{totals.Vacation}</p>
           <p className="text-md md:text-sm text-gray-600">Vacation</p>
         </div>
         <div>
-          <p className="text-purple-500 text-xl  md:text-lg font-semibold">{totals[period].Personal}</p>
+          <p className="text-purple-500 text-xl md:text-lg font-semibold">{totals.Personal}</p>
           <p className="text-md md:text-sm text-gray-600">Personal</p>
         </div>
         <div>
-          <p className="text-yellow-500 text-xl  md:text-lg  font-semibold">{totals[period].Emergency}</p>
+          <p className="text-yellow-500 text-xl md:text-lg font-semibold">{totals.Emergency}</p>
           <p className="text-md md:text-sm text-gray-600">Emergency</p>
         </div>
       </div>
     </div>
   );
-};
-
-export default LeaveSummary;
+}
