@@ -11,7 +11,7 @@ const OnboardingProgress = () => {
     const fetchOnboarding = async () => {
       try {
         const response = await getData(endpoints.onboardingRequests);
-        console.log("onboarding response", response);
+        // console.log("onboarding response", response);
 
         const data = response?.data || response || {};
 

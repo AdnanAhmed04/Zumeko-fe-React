@@ -10,7 +10,7 @@ const CompanyAnnouncements = () => {
   const fetchAnnouncements = async () => {
     try {
       const response = await getData(endpoints.announcements);
-      console.log("announcements response", response);
+      // console.log("announcements response", response);
 
       // ✅ Extract the array at response.data.data
       if (Array.isArray(response?.data?.data)) {

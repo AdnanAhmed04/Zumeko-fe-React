@@ -9,7 +9,7 @@ const WorkAnniversaries = () => {
   const fetchAnniversaries = async () => {
     try {
       const response = await getData(endpoints.joiningAnniversary);
-      console.log("joining anniversary response", response);
+      // console.log("joining anniversary response", response);
 
       if (response?.data?.anniversaries) {
         setAnniversaries(response.data.anniversaries);

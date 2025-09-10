@@ -9,7 +9,7 @@ const UpcomingBirthdays = () => {
     const fetchBirthdays = async () => {
       try {
         const response = await getData(endpoints.upcomingBirthdays);
-        console.log("upcoming birthdays response", response);
+        // console.log("upcoming birthdays response", response);
 
         const data = response?.data || response || [];
         setBirthdays(data);

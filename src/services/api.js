@@ -22,7 +22,7 @@ export const getData = async (endpoint, params = {}) => {
   try {
     console.log("🌍 Fetching:", `${API_URL}${endpoint}`, params);
     const response = await api.get(endpoint, { params });
-    console.log('onboarding status response', response.data.data);
+    // console.log('onboarding status response', response.data.data);
     return response.data;
   } catch (error) {
     console.error(

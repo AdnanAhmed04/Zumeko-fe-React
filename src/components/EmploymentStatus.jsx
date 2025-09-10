@@ -9,7 +9,7 @@ const EmploymentStatus = () => {
     const fetchEmploymentStatus = async () => {
       try {
         const response = await getData(endpoints.employmentStatus);
-        console.log("employment status raw response", response);
+        // console.log("employment status raw response", response);
 
         const status =
           response?.data?.employmentStatus ||
