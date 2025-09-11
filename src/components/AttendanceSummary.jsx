@@ -18,29 +18,36 @@ export default function AttendanceSummary() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getData(`${endpoints.attendanceSummary}?unit=${period}`);
-        
-        // ✅ Console raw response
-        // console.log(`🌍 Raw ${period} API Response:`, res);
+        const res = await getData(
+          `${endpoints.attendanceSummary}?unit=${period}`
+        );
 
         if (res && res.data) {
           const transformed = res.data.map((item) => {
-            const ontime = item.summary.find((s) => s.status === "ON_TIME")?.count || 0;
-            const late =
-              item.summary.find((s) => s.status === "LATE_ARRIVED")?.count || 0;
-            const absent =
-              item.summary.find((s) => s.status === "ABSENT")?.count || 0;
+            const summary = Array.isArray(item.summary) ? item.summary : [];
+
+            let ontime =
+              item.ontime ??
+              Number(summary.find((s) => s.status === "ON_TIME")?.count ?? 0);
+            let late =
+              item.late ??
+              Number(
+                summary.find((s) => s.status === "LATE_ARRIVED")?.count ?? 0
+              );
+            let absent =
+              item.absent ??
+              Number(summary.find((s) => s.status === "ABSENT")?.count ?? 0);
+
+            const total = ontime + late + absent;
 
             return {
-              label: item.label,
+              label: item.label ?? item.day ?? item.name ?? "—",
               ontime,
               late,
               absent,
+              placeholder: total === 0 ? 1 : 0, // ✅ tiny baseline bar only if all 0
             };
           });
-
-          // ✅ Console transformed data
-          // console.log(`📊 Transformed ${period} Data:`, transformed);
 
           setData(transformed);
         }
@@ -61,10 +68,11 @@ export default function AttendanceSummary() {
     if (active && payload && payload.length) {
       const row = payload[0].payload;
       return (
-        <div className="p-2 bg-gray-50 border border-gray-200 rounded text-md">
+        <div className="p-2 bg-white border border-gray-200 rounded shadow-lg text-sm">
           <p className="font-medium">{row.label}</p>
           <p>
-            <span className="font-bold text-green-600">On-Time:</span> {row.ontime}
+            <span className="font-bold text-green-600">On-Time:</span>{" "}
+            {row.ontime}
           </p>
           <p>
             <span className="font-bold text-yellow-600">Late:</span> {row.late}
@@ -108,28 +116,88 @@ export default function AttendanceSummary() {
 
       {data.length > 0 ? (
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={data} barGap={0} barSize={70}>
+          <BarChart data={data} barGap={8} barSize={60}>
             <XAxis
               dataKey="label"
               stroke="#6b7280"
               tick={{ fontSize: 14, fontWeight: 600, fill: "#374151" }}
             />
             <YAxis hide />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
+            <Tooltip
+              content={<CustomTooltip />}
+              cursor={{ fill: "transparent" }}
+            />
             <Legend
               formatter={(value) => (
                 <span className="text-gray-600 font-medium">{value}</span>
               )}
               iconType="circle"
               iconSize={12}
+              payload={[
+                { value: "On-Time", type: "circle", color: "#2291c5" },
+                { value: "Late", type: "circle", color: "#eab308" },
+                { value: "Absent", type: "circle", color: "#ef4444" },
+                { value: "No data", type: "circle", color: "#33c05b" }, // ✅ static legend entry
+              ]}
             />
-            <Bar dataKey="ontime" stackId="a" fill="#22c55e" name="On-Time" />
-            <Bar dataKey="late" stackId="a" fill="#eab308" name="Late" />
-            <Bar dataKey="absent" stackId="a" fill="#ef4444" name="Absent" />
+
+            {/* ✅ Baseline tiny bar */}
+            <Bar
+              dataKey="placeholder"
+              stackId="a"
+              legendType="none"
+              shape={(props) => {
+                const { x, width, height, y } = props;
+                return (
+                  <rect
+                    x={x}
+                    y={y + height - 2}
+                    width={width}
+                    height={2}
+                    fill="#33c05b"
+                    rx={1}
+                    ry={1}
+                  />
+                );
+              }}
+            />
+
+            {/* Actual attendance data */}
+            <Bar
+              dataKey="ontime"
+              stackId="a"
+              fill="#2291c5"
+              name="On-Time"
+              radius={[4, 4, 0, 0]}
+            />
+            <Bar
+              dataKey="late"
+              stackId="a"
+              fill="#eab308"
+              name="Late"
+              radius={[4, 4, 0, 0]}
+            />
+
+            <Bar
+              dataKey="No data"
+              stackId="a"
+              fill="#33c05b"
+              name="No data"
+              radius={[4, 4, 0, 0]}
+            />
+            <Bar
+              dataKey="absent"
+              stackId="a"
+              fill="#ef4444"
+              name="Absent"
+              radius={[4, 4, 0, 0]}
+            />
           </BarChart>
         </ResponsiveContainer>
       ) : (
-        <div className="text-center text-gray-500 py-10">📭 No data available</div>
+        <div className="text-center text-gray-500 py-10">
+          📭 No data available
+        </div>
       )}
     </div>
   );

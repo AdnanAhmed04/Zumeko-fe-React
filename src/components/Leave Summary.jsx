@@ -15,32 +15,29 @@ export default function LeaveSummary() {
   const [period, setPeriod] = useState("weekly");
   const [data, setData] = useState([]);
 
-  const xAxisKey = {
-    weekly: "day",
-    monthly: "week",
-    yearly: "month",
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await getData(`${endpoints.leaveStats}?unit=${period}`);
-        
-        // ✅ Console raw response
-        console.log(`🌍 Raw ${period} Leave API Response:`, res);
 
         if (res && res.data) {
-          // Transform API data to chart format
-          const transformed = res.data.map((item) => ({
-            label: item.label || item.day || item.week || item.month,
-            Sick: item.Sick || 0,
-            Vacation: item.Vacation || 0,
-            Personal: item.Personal || 0,
-            Emergency: item.Emergency || 0,
-          }));
+          const transformed = res.data.map((item) => {
+            const Sick = item.Sick || 0;
+            const Vacation = item.Vacation || 0;
+            const Personal = item.Personal || 0;
+            const Emergency = item.Emergency || 0;
 
-          // ✅ Console transformed data
-          console.log(`📊 Transformed ${period} Leave Data:`, transformed);
+            const total = Sick + Vacation + Personal + Emergency;
+
+            return {
+              label: item.label || item.day || item.week || item.month,
+              Sick,
+              Vacation,
+              Personal,
+              Emergency,
+              placeholder: total === 0 ? 1 : 0, // ✅ add placeholder only if everything is 0
+            };
+          });
 
           setData(transformed);
         }
@@ -63,10 +60,21 @@ export default function LeaveSummary() {
       return (
         <div className="p-2 bg-white border border-gray-200 rounded shadow-lg text-sm">
           <p className="font-medium">{row.label}</p>
-          <p><span className="font-bold text-red-600">Sick:</span> {row.Sick}</p>
-          <p><span className="font-bold text-blue-600">Vacation:</span> {row.Vacation}</p>
-          <p><span className="font-bold text-purple-600">Personal:</span> {row.Personal}</p>
-          <p><span className="font-bold text-yellow-600">Emergency:</span> {row.Emergency}</p>
+          <p>
+            <span className="font-bold text-red-600">Sick:</span> {row.Sick}
+          </p>
+          <p>
+            <span className="font-bold text-blue-600">Vacation:</span>{" "}
+            {row.Vacation}
+          </p>
+          <p>
+            <span className="font-bold text-purple-600">Personal:</span>{" "}
+            {row.Personal}
+          </p>
+          <p>
+            <span className="font-bold text-yellow-600">Emergency:</span>{" "}
+            {row.Emergency}
+          </p>
         </div>
       );
     }
@@ -96,9 +104,24 @@ export default function LeaveSummary() {
           <p className="text-gray-500 text-sm">Leave types and counts taken</p>
         </div>
         <div className="flex gap-1 md:gap-3 md:text-lg">
-          <button className={getButtonStyles("weekly")} onClick={() => setPeriod("weekly")}>Weekly</button>
-          <button className={getButtonStyles("monthly")} onClick={() => setPeriod("monthly")}>Monthly</button>
-          <button className={getButtonStyles("yearly")} onClick={() => setPeriod("yearly")}>Yearly</button>
+          <button
+            className={getButtonStyles("weekly")}
+            onClick={() => setPeriod("weekly")}
+          >
+            Weekly
+          </button>
+          <button
+            className={getButtonStyles("monthly")}
+            onClick={() => setPeriod("monthly")}
+          >
+            Monthly
+          </button>
+          <button
+            className={getButtonStyles("yearly")}
+            onClick={() => setPeriod("yearly")}
+          >
+            Yearly
+          </button>
         </div>
       </div>
 
@@ -106,18 +129,79 @@ export default function LeaveSummary() {
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} barGap={8} barSize={50}>
-            <XAxis dataKey="label" stroke="#6b7280" tick={{ fontSize: 14, fontWeight: 600, fill: "#374151" }} />
+            <XAxis
+              dataKey="label"
+              stroke="#6b7280"
+              tick={{ fontSize: 14, fontWeight: 600, fill: "#374151" }}
+            />
             <YAxis hide />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
+            <Tooltip
+              content={<CustomTooltip />}
+              cursor={{ fill: "transparent" }}
+            />
             <Legend
-              formatter={(value) => <span className="text-gray-600 font-normal">{value}</span>}
+              formatter={(value) => (
+                <span className="text-gray-600 font-normal">{value}</span>
+              )}
               iconType="circle"
               iconSize={12}
             />
-            <Bar dataKey="Sick" stackId="a" fill="#ef4444" name="Sick Leave" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="Vacation" stackId="a" fill="#3b82f6" name="Vacation" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="Personal" stackId="a" fill="#8b5cf6" name="Personal" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="Emergency" stackId="a" fill="#f59e0b" name="Emergency" radius={[4, 4, 0, 0]} />
+
+            {/* ✅ Gray baseline when no data */}
+            <Bar
+              dataKey="placeholder"
+              stackId="a"
+              legendType="none" // ✅ hides from legend
+              shape={(props) => {
+                const { x, width, height, y } = props;
+                return (
+                  <rect
+                    x={x}
+                    y={y + height - 2}
+                    width={width}
+                    height={2}
+                    fill="#33c05b"
+                    rx={1}
+                    ry={1}
+                  />
+                );
+              }}
+            />
+            <Bar
+              dataKey="No data"
+              stackId="a"
+              fill="#33c05b"
+              name="No data"
+              radius={[4, 4, 0, 0]}
+            />
+            <Bar
+              dataKey="Sick"
+              stackId="a"
+              fill="#ef4444"
+              name="Sick Leave"
+              radius={[4, 4, 0, 0]}
+            />
+            <Bar
+              dataKey="Vacation"
+              stackId="a"
+              fill="#3b82f6"
+              name="Vacation"
+              radius={[4, 4, 0, 0]}
+            />
+            <Bar
+              dataKey="Personal"
+              stackId="a"
+              fill="#8b5cf6"
+              name="Personal"
+              radius={[4, 4, 0, 0]}
+            />
+            <Bar
+              dataKey="Emergency"
+              stackId="a"
+              fill="#f59e0b"
+              name="Emergency"
+              radius={[4, 4, 0, 0]}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -125,19 +209,27 @@ export default function LeaveSummary() {
       {/* Totals */}
       <div className="flex justify-around mt-6 text-center">
         <div>
-          <p className="text-red-500 text-xl md:text-lg font-semibold">{totals.Sick}</p>
+          <p className="text-red-500 text-xl md:text-lg font-semibold">
+            {totals.Sick}
+          </p>
           <p className="text-md md:text-sm text-gray-600">Sick Leave</p>
         </div>
         <div>
-          <p className="text-blue-500 text-xl md:text-lg font-semibold">{totals.Vacation}</p>
+          <p className="text-blue-500 text-xl md:text-lg font-semibold">
+            {totals.Vacation}
+          </p>
           <p className="text-md md:text-sm text-gray-600">Vacation</p>
         </div>
         <div>
-          <p className="text-purple-500 text-xl md:text-lg font-semibold">{totals.Personal}</p>
+          <p className="text-purple-500 text-xl md:text-lg font-semibold">
+            {totals.Personal}
+          </p>
           <p className="text-md md:text-sm text-gray-600">Personal</p>
         </div>
         <div>
-          <p className="text-yellow-500 text-xl md:text-lg font-semibold">{totals.Emergency}</p>
+          <p className="text-yellow-500 text-xl md:text-lg font-semibold">
+            {totals.Emergency}
+          </p>
           <p className="text-md md:text-sm text-gray-600">Emergency</p>
         </div>
       </div>
